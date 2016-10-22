@@ -8,10 +8,15 @@ RUN mkdir -p /data/1/dfs/nn \
 
 ADD hdfs-site.xml /opt/hadoop/etc/hadoop/hdfs-site.xml
 
-RUN sudo -u hdfs hadoop namenode -format
-
 ADD cmd.sh /root/cmd.sh
 
+# hdfs port
 EXPOSE 50070
+
+# yarn port
+EXPOSE 8025 8030 8141 8088 45454
+
+# hbase port 
+EXPOSE 60010
 
 CMD ["/root/cmd.sh"]

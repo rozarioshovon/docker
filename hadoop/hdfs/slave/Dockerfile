@@ -13,4 +13,12 @@ ADD hdfs-site.xml /opt/hadoop/etc/hadoop/hdfs-site.xml
 
 ADD cmd.sh /root/cmd.sh
 
+# hdfs port
+
+# yarn port
+EXPOSE 45454 
+
+# hbase port
+EXPOSE 60030
+
 CMD ["/root/cmd.sh"]

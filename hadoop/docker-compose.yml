@@ -7,6 +7,10 @@ services:
       - zookeeper
     ports:
       - 50070:50070
+      - 8030:8030
+      - 8141:8141
+      - 8088:8088
+      - 45454:45454
     environment:
       HADOOP_NAMENODE_URI: namenode
     container_name: namenode
@@ -17,12 +21,9 @@ services:
     image: khkwon/hadoop/hdfs/datanode
     links:
       - zookeeper
-    links:
       - namenode
     environment:
       HADOOP_NAMENODE_URI: namenode
-
-    container_name: hbasemaster
 
   zookeeper:
     build: ./zookeeper

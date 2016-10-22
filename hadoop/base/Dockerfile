@@ -35,7 +35,7 @@ ADD hbase-site.xml.tmpl /opt/hadoop/etc/hadoop/hbase-site.xml
 RUN mkdir -p /opt/hadoop/logs && chmod -R 777 /opt/hadoop/logs
 
 # download & install hbase$
-# ENV HBASE_VERSION 1.2.3$
+ENV HBASE_VERSION 1.2.3
 RUN cd && \
     wget -q http://ftp.jaist.ac.jp/pub/apache/hbase/1.2.3/hbase-${HBASE_VERSION}-bin.tar.gz && \
     tar -xzf hbase-${HBASE_VERSION}-bin.tar.gz && \
@@ -44,6 +44,8 @@ RUN cd && \
     rm hbase-${HBASE_VERSION}-bin.tar.gz
 RUN chmod +x /opt/hbase/bin/*
 ENV PATH $PATH:/opt/hbase/bin
+RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' /opt/hbase/conf/hbase-env.sh
+RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
 
 ENV SPARK_VERSION 2.0.1
 RUN wget http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
