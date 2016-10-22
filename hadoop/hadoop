@@ -12,8 +12,6 @@ if [ $command = "start" ]; then
     docker exec namenode sudo -u hdfs hadoop fs -mkdir /hbase
     docker exec namenode sudo -u hdfs hadoop fs -chown -R hdfs:supergroup /hbase
 
-    docker-compose up -d hbasemaster hbaseregion
-
 elif [ $command = "stop" ]; then
     docker-compose kill
     docker-compose rm
