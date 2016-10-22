@@ -1,0 +1,46 @@
+version: '2'
+services:
+  namenode:
+    build: ./hdfs/master
+    image: khkwon/hadoop/hdfs/namenode
+    ports:
+      - 50070:50070
+    environment:
+      HADOOP_NAMENODE_URI: namenode
+    container_name: namenode
+    hostname: namenode
+
+  datanode:
+    build: ./hdfs/slave
+    image: khkwon/hadoop/hdfs/datanode
+    links:
+      - namenode
+    environment:
+      HADOOP_NAMENODE_URI: namenode
+
+  hbasemaster:
+    build: ./hbase/base
+    image: khkwon/hadoop/hbase/master
+    command: /root/script.sh master
+    links:
+      - namenode
+      - zookeeper
+    environment:
+      HADOOP_NAMENODE_URI: namenode
+    container_name: hbasemaster
+
+  hbaseregion:
+    build: ./hbase/base
+    image: khkwon/hadoop/hbase/region
+    command: /root/script.sh regionserver
+    links:
+      - namenode
+      - zookeeper
+    environment:
+      HADOOP_NAMENODE_URI: namenode
+  
+  zookeeper:
+    build: ./zookeeper
+    image: khkwon/hadoop/zookeeper
+    container_name: zk1
+    command: '1'

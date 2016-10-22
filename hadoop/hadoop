@@ -1,0 +1,20 @@
+#!/bin/sh
+
+command="$@"
+
+if [ $command = "start" ]; then
+    echo "start hadoop"
+    docker-compose up -d zookeeper namenode datanode
+  
+    sleep 5
+
+    echo "configuring hbase setting"
+    docker exec namenode sudo -u hdfs hadoop fs -mkdir /hbase
+    docker exec namenode sudo -u hdfs hadoop fs -chown -R hdfs:supergroup /hbase
+
+    docker-compose up -d hbasemaster hbaseregion
+
+elif [ $command = "stop" ]; then
+    docker-compose kill
+    docker-compose rm
+fi
