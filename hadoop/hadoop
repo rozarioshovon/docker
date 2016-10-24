@@ -9,7 +9,7 @@ if [ $command = "start" ]; then
 
 elif [ $command = "stop" ]; then
   docker-compose kill
-  docker-compose rm
+  echo "y\n" | docker-compose rm
 elif [ $command = "client" ]; then
   docker-compose up -d client
   docker exec -it hadoop_client bash
