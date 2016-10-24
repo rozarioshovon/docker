@@ -1,5 +1,16 @@
 version: '2'
 services:
+  client:
+    tty: true
+    build: ./client
+    image: khkwon/hadoop/client
+    links:
+      - namenode
+    volumes:
+      - ./client/data/hadoop:/tmp/hadoop
+    command: bash
+    container_name: hadoop_client
+
   namenode:
     build: ./hdfs/master
     image: khkwon/hadoop/hdfs/namenode

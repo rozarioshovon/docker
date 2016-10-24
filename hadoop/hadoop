@@ -3,11 +3,14 @@
 command="$@"
 
 if [ $command = "start" ]; then
-    echo "start hadoop"
-    docker-compose up -d zookeeper namenode
-    docker-compose scale datanode=3
+  echo "start hadoop"
+  docker-compose up -d zookeeper namenode
+  docker-compose scale datanode=3
 
 elif [ $command = "stop" ]; then
-    docker-compose kill
-    docker-compose rm
+  docker-compose kill
+  docker-compose rm
+elif [ $command = "client" ]; then
+  docker-compose up -d client
+  docker exec -it hadoop_client bash
 fi
