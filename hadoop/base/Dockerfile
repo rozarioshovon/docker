@@ -31,7 +31,6 @@ ENV PATH ${PATH}:/opt/hadoop/bin
 ADD core-site.xml.tmpl /opt/hadoop/etc/hadoop/core-site.xml
 ADD yarn-site.xml.tmpl /opt/hadoop/etc/hadoop/yarn-site.xml
 ADD mapred-site.xml.tmpl /opt/hadoop/etc/hadoop/mapred-site.xml
-ADD hbase-site.xml.tmpl /opt/hadoop/etc/hadoop/hbase-site.xml
 RUN mkdir -p /opt/hadoop/logs && chmod -R 777 /opt/hadoop/logs
 
 # download & install hbase$
@@ -46,7 +45,9 @@ RUN chmod +x /opt/hbase/bin/*
 ENV PATH $PATH:/opt/hbase/bin
 RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' /opt/hbase/conf/hbase-env.sh
 RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
+ADD hbase-site.xml.tmpl /opt/hbase/conf/hbase-site.xml
 
+# download & install spark
 ENV SPARK_VERSION 2.0.1
 RUN wget http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
     tar -xzf spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
@@ -56,6 +57,18 @@ RUN wget http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${
 ENV PATH ${PATH}:/opt/spark/bin
 RUN mv /opt/spark/conf/spark-env.sh.template /opt/spark/conf/spark-env.sh
 RUN echo "HADOOP_CONF_DIR=${HADOOP_CONF_DIR}" >> /opt/spark/conf/spark-env.sh
+
+ENV DRILL_VERSION 1.8.0
+RUN wget http://apache.mirrors.hoobly.com/drill/drill-1.8.0/apache-drill-${DRILL_VERSION}.tar.gz && \
+    tar -xzf apache-drill-${DRILL_VERSION}.tar.gz && \
+    mkdir -p /opt/ && \
+    mv apache-drill-${DRILL_VERSION} /opt/drill && \
+    rm apache-drill-${DRILL_VERSION}.tar.gz
+ENV PATH ${PATH}:/opt/drill/bin
+RUN apk update && \ 
+    apk add libstdc++ && \
+    rm -rf /var/cache/apk/*
+ADD drill-override.conf /opt/drill/conf/drill-override.conf
 
 RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
