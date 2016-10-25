@@ -12,4 +12,6 @@ sudo -u hdfs hadoop fs -chown -R hdfs:supergroup /hbase
 
 sudo -u hbase /opt/hbase/bin/hbase-daemon.sh start master
 
+/opt/drill/bin/drillbit.sh start
+
 while true; do echo my daemonized container; sleep 1; done

@@ -17,6 +17,9 @@ EXPOSE 50070
 EXPOSE 8025 8030 8141 8088 45454
 
 # hbase port 
-EXPOSE 60010
+EXPOSE 16010
+
+# drill port
+EXPOSE 8047
 
 CMD ["/root/cmd.sh"]

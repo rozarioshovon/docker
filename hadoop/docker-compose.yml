@@ -19,9 +19,11 @@ services:
     ports:
       - 50070:50070
       - 8030:8030
+      - 8047:8047
       - 8141:8141
       - 8088:8088
       - 45454:45454
+      - 16010:16010
     environment:
       HADOOP_NAMENODE_URI: namenode
     container_name: namenode
@@ -33,11 +35,11 @@ services:
     links:
       - zookeeper
       - namenode
+    ports:
+      - 16030
     environment:
       HADOOP_NAMENODE_URI: namenode
 
   zookeeper:
-    build: ./zookeeper
-    image: khkwon/hadoop/zookeeper
+    image: zookeeper:3.4.9
     container_name: zk1
-    command: '1'

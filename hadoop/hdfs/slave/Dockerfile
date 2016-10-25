@@ -19,6 +19,6 @@ ADD cmd.sh /root/cmd.sh
 EXPOSE 45454 
 
 # hbase port
-EXPOSE 60030
+EXPOSE 16030
 
 CMD ["/root/cmd.sh"]

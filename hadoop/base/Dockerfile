@@ -46,6 +46,10 @@ ENV PATH $PATH:/opt/hbase/bin
 RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' /opt/hbase/conf/hbase-env.sh
 RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
 ADD hbase-site.xml.tmpl /opt/hbase/conf/hbase-site.xml
+ADD hbase-replace-jar.sh /tmp/hbase-replace-jar.sh
+RUN /tmp/hbase-replace-jar.sh && rm /tmp/hbase-replace-jar.sh
+RUN wget -P /opt/hbase/lib http://central.maven.org/maven2/org/apache/hadoop/hadoop-client/2.7.3/hadoop-client-2.7.3.jar && \
+    rm /opt/hbase/lib/hadoop-client-2.5.1.jar
 
 # download & install spark
 ENV SPARK_VERSION 2.0.1
