@@ -7,10 +7,10 @@ sudo -u hdfs /opt/hadoop/sbin/hadoop-daemon.sh start namenode
 sudo -u hdfs /opt/hadoop/sbin/yarn-daemon.sh start resourcemanager
 
 # configure hbase 
-sudo -u hdfs hadoop fs -mkdir /hbase
-sudo -u hdfs hadoop fs -chown -R hdfs:supergroup /hbase
+#sudo -u hdfs hadoop fs -mkdir /hbase
+#sudo -u hdfs hadoop fs -chown -R hdfs:supergroup /hbase
 
-sudo -u hbase /opt/hbase/bin/hbase-daemon.sh start master
+#sudo -u hbase /opt/hbase/bin/hbase-daemon.sh start master
 
 /opt/drill/bin/drillbit.sh start
 
