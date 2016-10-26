@@ -6,6 +6,7 @@ RUN addgroup -S supergroup \
   && adduser -S -D -G supergroup hdfs \
   && adduser -S -D -G supergroup spark \
   && adduser -S -D -G supergroup hive \
+  && adduser -S -D -G supergroup yarn \
   && adduser -S -D -G supergroup hbase
 
 # environment

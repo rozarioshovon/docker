@@ -24,6 +24,7 @@ services:
       - 8088:8088
       - 45454:45454
       - 16010:16010
+      - 4040:4040
     environment:
       HADOOP_NAMENODE_URI: namenode
     container_name: namenode
