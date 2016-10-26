@@ -5,7 +5,7 @@ command="$@"
 if [ $command = "start" ]; then
   echo "start hadoop"
   docker-compose up -d zookeeper namenode
-  docker-compose scale datanode=3
+  docker-compose scale datanode=4
 elif [ $command = "stop" ]; then
   docker-compose kill
   echo "y\n" | docker-compose rm

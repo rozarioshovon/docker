@@ -22,4 +22,7 @@ EXPOSE 16010
 # drill port
 EXPOSE 8047
 
+# spark port
+EXPOSE 4040
+
 CMD ["/root/cmd.sh"]
