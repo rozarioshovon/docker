@@ -63,8 +63,9 @@ ENV PATH ${PATH}:/opt/spark/bin
 RUN mv /opt/spark/conf/spark-env.sh.template /opt/spark/conf/spark-env.sh
 RUN echo "HADOOP_CONF_DIR=${HADOOP_CONF_DIR}" >> /opt/spark/conf/spark-env.sh
 
+# download & install drill
 ENV DRILL_VERSION 1.8.0
-RUN wget http://apache.mirrors.hoobly.com/drill/drill-1.8.0/apache-drill-${DRILL_VERSION}.tar.gz && \
+RUN wget http://ftp.meisei-u.ac.jp/mirror/apache/dist/drill/drill-${DRILL_VERSION}/apache-drill-${DRILL_VERSION}.tar.gz && \
     tar -xzf apache-drill-${DRILL_VERSION}.tar.gz && \
     mkdir -p /opt/ && \
     mv apache-drill-${DRILL_VERSION} /opt/drill && \
