@@ -18,7 +18,7 @@
 
 <configuration>
   <property>
-    <name>dfs.datanode.name.dir</name>
+    <name>dfs.datanode.data.dir</name>
     <value>/data/1/dfs/dn,/data/2/dfs/dn,/data/3/dfs/dn</value>
   </property>
   <property>
