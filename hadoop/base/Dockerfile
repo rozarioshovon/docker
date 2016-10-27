@@ -1,13 +1,13 @@
-FROM khkwon/java:8-alpine
+FROM khkwon/java:8
 MAINTAINER khkwon<kiheng.kwon@monstar-lab.com>
 
 # add user
-RUN addgroup -S supergroup \
-  && adduser -S -D -G supergroup hdfs \
-  && adduser -S -D -G supergroup spark \
-  && adduser -S -D -G supergroup hive \
-  && adduser -S -D -G supergroup yarn \
-  && adduser -S -D -G supergroup hbase
+RUN addgroup supergroup \
+  && useradd hdfs \
+  && useradd spark \
+  && useradd hive \
+  && useradd yarn \
+  && useradd hbase
 
 # environment
 ENV HADOOP_PREFIX /opt/hadoop
@@ -22,7 +22,7 @@ ENV HBASE_HOME /opt/hbase
 
 # download hadoop
 ENV HADOOP_VERSION 2.7.3
-RUN wget http://ftp.jaist.ac.jp/pub/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+RUN wget -q http://ftp.jaist.ac.jp/pub/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
     tar -xzf hadoop-${HADOOP_VERSION}.tar.gz && \
     mkdir -p /opt/ && \
     mv hadoop-${HADOOP_VERSION} /opt/hadoop && \
@@ -44,7 +44,7 @@ RUN cd && \
     rm hbase-${HBASE_VERSION}-bin.tar.gz
 RUN chmod +x /opt/hbase/bin/*
 ENV PATH $PATH:/opt/hbase/bin
-RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk:' /opt/hbase/conf/hbase-env.sh
+RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64:' /opt/hbase/conf/hbase-env.sh
 RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
 ADD hbase-site.xml.tmpl /opt/hbase/conf/hbase-site.xml
 ADD hbase-replace-jar.sh /tmp/hbase-replace-jar.sh
@@ -54,7 +54,7 @@ RUN wget -P /opt/hbase/lib http://central.maven.org/maven2/org/apache/hadoop/had
 
 # download & install spark
 ENV SPARK_VERSION 2.0.1
-RUN wget http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
+RUN wget -q http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
     tar -xzf spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
     mkdir -p /opt/ && \
     mv spark-${SPARK_VERSION}-bin-hadoop2.7 /opt/spark && \
@@ -65,18 +65,15 @@ RUN echo "HADOOP_CONF_DIR=${HADOOP_CONF_DIR}" >> /opt/spark/conf/spark-env.sh
 
 # download & install drill
 ENV DRILL_VERSION 1.8.0
-RUN wget http://ftp.meisei-u.ac.jp/mirror/apache/dist/drill/drill-${DRILL_VERSION}/apache-drill-${DRILL_VERSION}.tar.gz && \
+RUN wget -q http://ftp.meisei-u.ac.jp/mirror/apache/dist/drill/drill-${DRILL_VERSION}/apache-drill-${DRILL_VERSION}.tar.gz && \
     tar -xzf apache-drill-${DRILL_VERSION}.tar.gz && \
     mkdir -p /opt/ && \
     mv apache-drill-${DRILL_VERSION} /opt/drill && \
     rm apache-drill-${DRILL_VERSION}.tar.gz
 ENV PATH ${PATH}:/opt/drill/bin
-RUN apk update && \ 
-    apk add libstdc++ && \
-    rm -rf /var/cache/apk/*
 ADD drill-override.conf /opt/drill/conf/drill-override.conf
 
-RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
 # ENTRYPOINT
