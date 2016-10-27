@@ -11,10 +11,10 @@ sudo -u hdfs hadoop fs -mkdir -p /user/spark
 sudo -u hdfs hadoop fs -chown -R spark:supergroup /user/spark
 
 # configure hbase 
-#sudo -u hdfs hadoop fs -mkdir /hbase
-#sudo -u hdfs hadoop fs -chown -R hdfs:supergroup /hbase
+sudo -u hdfs hadoop fs -mkdir /hbase
+sudo -u hdfs hadoop fs -chown -R hbase:supergroup /hbase
 
-#sudo -u hbase /opt/hbase/bin/hbase-daemon.sh start master
+sudo -u hbase /opt/hbase/bin/hbase-daemon.sh start master
 
 /opt/drill/bin/drillbit.sh start
 

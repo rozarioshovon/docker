@@ -37,6 +37,7 @@ services:
       - zookeeper
       - namenode
     ports:
+      - 16010
       - 16030
     environment:
       HADOOP_NAMENODE_URI: namenode

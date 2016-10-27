@@ -44,7 +44,7 @@ RUN cd && \
     rm hbase-${HBASE_VERSION}-bin.tar.gz
 RUN chmod +x /opt/hbase/bin/*
 ENV PATH $PATH:/opt/hbase/bin
-RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' /opt/hbase/conf/hbase-env.sh
+RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk:' /opt/hbase/conf/hbase-env.sh
 RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
 ADD hbase-site.xml.tmpl /opt/hbase/conf/hbase-site.xml
 ADD hbase-replace-jar.sh /tmp/hbase-replace-jar.sh
