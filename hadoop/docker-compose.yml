@@ -4,8 +4,6 @@ services:
     tty: true
     build: ./client
     image: khkwon/hadoop/client
-    links:
-      - namenode
     volumes:
       - ./client/data/hadoop:/tmp/hadoop
     command: bash
@@ -14,8 +12,6 @@ services:
   namenode:
     build: ./hdfs/master
     image: khkwon/hadoop/hdfs/namenode
-    links:
-      - zookeeper
     ports:
       - 50070:50070
       - 8030:8030
@@ -30,17 +26,24 @@ services:
     container_name: namenode
     hostname: namenode
 
-  datanode:
+  datanode1:
     build: ./hdfs/slave
     image: khkwon/hadoop/hdfs/datanode
-    links:
-      - zookeeper
-      - namenode
-    ports:
-      - 16010
-      - 16030
     environment:
       HADOOP_NAMENODE_URI: namenode
+    hostname: hadoop_datanode1_1.hadoop_default
+
+  datanode2:
+    image: khkwon/hadoop/hdfs/datanode
+    environment:
+      HADOOP_NAMENODE_URI: namenode
+    hostname: hadoop_datanode2_1.hadoop_default
+
+  datanode3:
+    image: khkwon/hadoop/hdfs/datanode
+    environment:
+      HADOOP_NAMENODE_URI: namenode
+    hostname: hadoop_datanode3_1.hadoop_default
 
   zookeeper:
     image: zookeeper:3.4.9

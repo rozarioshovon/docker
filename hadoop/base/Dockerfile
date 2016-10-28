@@ -34,24 +34,6 @@ ADD yarn-site.xml.tmpl /opt/hadoop/etc/hadoop/yarn-site.xml
 ADD mapred-site.xml.tmpl /opt/hadoop/etc/hadoop/mapred-site.xml
 RUN mkdir -p /opt/hadoop/logs && chmod -R 777 /opt/hadoop/logs
 
-# download & install hbase$
-ENV HBASE_VERSION 1.2.3
-RUN cd && \
-    wget -q http://ftp.jaist.ac.jp/pub/apache/hbase/1.2.3/hbase-${HBASE_VERSION}-bin.tar.gz && \
-    tar -xzf hbase-${HBASE_VERSION}-bin.tar.gz && \
-    mkdir -p /opt/ && \
-    mv hbase-${HBASE_VERSION} /opt/hbase && \
-    rm hbase-${HBASE_VERSION}-bin.tar.gz
-RUN chmod +x /opt/hbase/bin/*
-ENV PATH $PATH:/opt/hbase/bin
-RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk:' /opt/hbase/conf/hbase-env.sh
-RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
-ADD hbase-site.xml.tmpl /opt/hbase/conf/hbase-site.xml
-ADD hbase-replace-jar.sh /tmp/hbase-replace-jar.sh
-RUN /tmp/hbase-replace-jar.sh && rm /tmp/hbase-replace-jar.sh
-RUN wget -P /opt/hbase/lib http://central.maven.org/maven2/org/apache/hadoop/hadoop-client/2.7.3/hadoop-client-2.7.3.jar && \
-    rm /opt/hbase/lib/hadoop-client-2.5.1.jar
-
 # download & install spark
 ENV SPARK_VERSION 2.0.1
 RUN wget http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
@@ -75,6 +57,24 @@ RUN apk update && \
     apk add libstdc++ && \
     rm -rf /var/cache/apk/*
 ADD drill-override.conf /opt/drill/conf/drill-override.conf
+
+# download & install hbase$
+ENV HBASE_VERSION 1.2.3
+RUN cd && \
+    wget -q http://ftp.jaist.ac.jp/pub/apache/hbase/1.2.3/hbase-${HBASE_VERSION}-bin.tar.gz && \
+    tar -xzf hbase-${HBASE_VERSION}-bin.tar.gz && \
+    mkdir -p /opt/ && \
+    mv hbase-${HBASE_VERSION} /opt/hbase && \
+    rm hbase-${HBASE_VERSION}-bin.tar.gz
+RUN chmod +x /opt/hbase/bin/*
+ENV PATH $PATH:/opt/hbase/bin
+RUN sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk:' /opt/hbase/conf/hbase-env.sh
+RUN mkdir -p /opt/hbase/logs && chmod -R 777 /opt/hbase/logs
+ADD hbase-site.xml.tmpl /opt/hbase/conf/hbase-site.xml
+ADD hbase-replace-jar.sh /tmp/hbase-replace-jar.sh
+RUN /tmp/hbase-replace-jar.sh && rm /tmp/hbase-replace-jar.sh
+RUN wget -P /opt/hbase/lib http://central.maven.org/maven2/org/apache/hadoop/hadoop-client/2.7.3/hadoop-client-2.7.3.jar && \
+    rm /opt/hbase/lib/hadoop-client-2.5.1.jar
 
 RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
