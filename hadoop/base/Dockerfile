@@ -22,7 +22,7 @@ ENV HBASE_HOME /opt/hbase
 
 # download hadoop
 ENV HADOOP_VERSION 2.7.3
-RUN wget http://ftp.jaist.ac.jp/pub/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+RUN wget -q http://ftp.jaist.ac.jp/pub/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
     tar -xzf hadoop-${HADOOP_VERSION}.tar.gz && \
     mkdir -p /opt/ && \
     mv hadoop-${HADOOP_VERSION} /opt/hadoop && \
@@ -36,7 +36,7 @@ RUN mkdir -p /opt/hadoop/logs && chmod -R 777 /opt/hadoop/logs
 
 # download & install spark
 ENV SPARK_VERSION 2.0.1
-RUN wget http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
+RUN wget -q http://ftp.jaist.ac.jp/pub/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
     tar -xzf spark-${SPARK_VERSION}-bin-hadoop2.7.tgz && \
     mkdir -p /opt/ && \
     mv spark-${SPARK_VERSION}-bin-hadoop2.7 /opt/spark && \
@@ -47,7 +47,7 @@ RUN echo "HADOOP_CONF_DIR=${HADOOP_CONF_DIR}" >> /opt/spark/conf/spark-env.sh
 
 # download & install drill
 ENV DRILL_VERSION 1.8.0
-RUN wget http://ftp.meisei-u.ac.jp/mirror/apache/dist/drill/drill-${DRILL_VERSION}/apache-drill-${DRILL_VERSION}.tar.gz && \
+RUN wget -q http://ftp.meisei-u.ac.jp/mirror/apache/dist/drill/drill-${DRILL_VERSION}/apache-drill-${DRILL_VERSION}.tar.gz && \
     tar -xzf apache-drill-${DRILL_VERSION}.tar.gz && \
     mkdir -p /opt/ && \
     mv apache-drill-${DRILL_VERSION} /opt/drill && \
@@ -61,7 +61,7 @@ ADD drill-override.conf /opt/drill/conf/drill-override.conf
 # download & install hbase$
 ENV HBASE_VERSION 1.2.3
 RUN cd && \
-    wget -q http://ftp.jaist.ac.jp/pub/apache/hbase/1.2.3/hbase-${HBASE_VERSION}-bin.tar.gz && \
+    wget -q http://ftp.jaist.ac.jp/pub/apache/hbase/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz && \
     tar -xzf hbase-${HBASE_VERSION}-bin.tar.gz && \
     mkdir -p /opt/ && \
     mv hbase-${HBASE_VERSION} /opt/hbase && \

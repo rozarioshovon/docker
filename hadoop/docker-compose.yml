@@ -47,4 +47,6 @@ services:
 
   zookeeper:
     image: zookeeper:3.4.9
+    ports:
+      - 2181:2181
     container_name: zk1
