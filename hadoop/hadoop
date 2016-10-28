@@ -2,13 +2,25 @@
 
 command="$@"
 
-if [ $command = "start" ]; then
-  echo "start hadoop"
+function start() {
   docker-compose up -d zookeeper namenode datanode1 datanode2 datanode3
-elif [ $command = "stop" ]; then
-  docker-compose kill
-  echo "y\n" | docker-compose rm
-elif [ $command = "client" ]; then
-  docker-compose up -d client
-  docker exec -it hadoop_client bash
-fi
+}
+
+function stop() {
+    docker-compose kill
+    echo "y\n" | docker-compose rm
+}
+
+case $command in
+  "start" ) 
+    start;;
+  "stop" ) 
+    stop;;
+  "restart" ) 
+    stop
+    start;;
+  "client" ) 
+    docker-compose up -d client
+    docker exec -it hadoop_client bash;;
+esac
+
