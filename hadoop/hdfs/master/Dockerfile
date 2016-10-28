@@ -1,4 +1,4 @@
-FROM khkwon/hadoop/base
+FROM khkwon/hadoop/base:0.98
 MAINTAINER khkwon<kiheng.kwon@monstar-lab.com>
 
 # master node setting
@@ -17,7 +17,7 @@ EXPOSE 50070
 EXPOSE 8025 8030 8141 8088 45454
 
 # hbase port 
-EXPOSE 16010
+EXPOSE 60010
 
 # drill port
 EXPOSE 8047

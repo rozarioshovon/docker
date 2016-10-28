@@ -3,7 +3,7 @@ services:
   client:
     tty: true
     build: ./client
-    image: khkwon/hadoop/client
+    image: khkwon/hadoop/client:hbase098
     volumes:
       - ./client/data/hadoop:/tmp/hadoop
     command: bash
@@ -11,7 +11,7 @@ services:
 
   namenode:
     build: ./hdfs/master
-    image: khkwon/hadoop/hdfs/namenode
+    image: khkwon/hadoop/hdfs/namenode:hbase098
     ports:
       - 50070:50070
       - 8030:8030
@@ -19,7 +19,7 @@ services:
       - 8141:8141
       - 8088:8088
       - 45454:45454
-      - 16010:16010
+      - 60010:60010
       - 4040:4040
     environment:
       HADOOP_NAMENODE_URI: namenode
@@ -28,19 +28,19 @@ services:
 
   datanode1:
     build: ./hdfs/slave
-    image: khkwon/hadoop/hdfs/datanode
+    image: khkwon/hadoop/hdfs/datanode:hbase098
     environment:
       HADOOP_NAMENODE_URI: namenode
     hostname: hadoop_datanode1_1.hadoop_default
 
   datanode2:
-    image: khkwon/hadoop/hdfs/datanode
+    image: khkwon/hadoop/hdfs/datanode:hbase098
     environment:
       HADOOP_NAMENODE_URI: namenode
     hostname: hadoop_datanode2_1.hadoop_default
 
   datanode3:
-    image: khkwon/hadoop/hdfs/datanode
+    image: khkwon/hadoop/hdfs/datanode:hbase098
     environment:
       HADOOP_NAMENODE_URI: namenode
     hostname: hadoop_datanode3_1.hadoop_default
