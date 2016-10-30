@@ -1,0 +1,7 @@
+version: '2'
+services:
+  fluentd:
+    build: ./fluentd
+    image: khkwon/kafka/fluentd
+    ports:
+      - 24224:24224
