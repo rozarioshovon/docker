@@ -5,3 +5,29 @@ services:
     image: khkwon/kafka/fluentd
     ports:
       - 24224:24224
+    links:
+      - kafka
+    container_name: td-agent
+  
+  kafka:
+    build: ./base
+    image: khkwon/kafka/base
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    command: /root/bootstrap.sh
+    container_name: kafka
+  
+  zookeeper:
+     image: zookeeper:3.4.9
+     container_name: zk1
+  
+  nginx:
+    build: ./nginx
+    image: khkwon/kafka/nginx
+    ports:
+      - 8080:80
+    links:
+      - kafka
+    container_name: nginx

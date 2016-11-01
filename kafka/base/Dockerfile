@@ -9,3 +9,8 @@ RUN wget -q http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/kafka/0.10.1.0/kaf
 ENV PATH $PATH:/opt/kafka/bin
 
 EXPOSE 9092
+
+ADD bootstrap.sh /root/bootstrap.sh
+ADD server.properties /opt/kafka/config/server.properties
+
+CMD "/root/bootstrap.sh"
