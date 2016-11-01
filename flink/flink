@@ -1,0 +1,22 @@
+#!/bin/sh
+
+command="$@"
+
+start() {
+  docker-compose up -d 
+}
+
+stop() {
+  docker-compose kill
+  echo "y\n" | docker-compose rm
+}
+
+case $command in
+  "start" )
+    start;;
+  "stop" )
+    stop;;
+  "restart" )
+    stop
+    start;;
+esac
