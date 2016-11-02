@@ -25,7 +25,7 @@
 # The JobManager process will use this hostname to bind the listening servers to.
 # The TaskManagers will try to connect to the JobManager on that host.
 
-jobmanager.rpc.address: "flink-master"
+jobmanager.rpc.address: flink-master
 
 
 # The port where the JobManager's main actor system listens for messages.
@@ -138,11 +138,11 @@ jobmanager.web.port: 8081
 # setup. This must be a list of the form:
 # "host1:clientPort,host2[:clientPort],..." (default clientPort: 2181)
 #
-# recovery.mode: zookeeper
+#recovery.mode: zookeeper
 #
-# recovery.zookeeper.quorum: localhost:2181,...
+# recovery.zookeeper.quorum: zk1:2181
 #
 # Note: You need to set the state backend to 'filesystem' and the checkpoint
 # directory (see above) before configuring the storageDir.
 #
-# recovery.zookeeper.storageDir: hdfs:///recovery
+# recovery.zookeeper.storageDir: hdfs:///flink-master:9000/user/zookeeper

@@ -6,17 +6,21 @@ services:
     ports:
       - 50070:50070
       - 8081:8081
+      - 8088:8088
     environment:
       HADOOP_NAMENODE_URI: flink-master
     container_name: flink-master
     hostname: flink-master
 
-  worker:
+  worker1:
     build: ./worker
     image: khkwon/flink/worker
+    ports:
+      - 8042:8042
     environment:
       HADOOP_NAMENODE_URI: flink-master
-    
+    container_name: flink-worker1   
+
   zookeeper:
     image: zookeeper:3.4.9
     container_name: zk1
