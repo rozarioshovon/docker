@@ -11,6 +11,5 @@ RUN mkdir -p /data/3/dfs/dn \
 
 ADD hdfs-site.xml /opt/hadoop/etc/hadoop/hdfs-site.xml
 
-ADD cmd.sh /root/cmd.sh
-
-CMD ["/root/cmd.sh"]
+ADD run.sh /root/run.sh
+CMD /root/run.sh

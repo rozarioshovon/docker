@@ -7,6 +7,7 @@ RUN addgroup -S supergroup \
   && adduser -S -D -G supergroup spark \
   && adduser -S -D -G supergroup hive \
   && adduser -S -D -G supergroup yarn \
+  && adduser -S -D -G supergroup flink \
   && adduser -S -D -G supergroup hbase
 
 # environment
@@ -15,8 +16,9 @@ ENV HADOOP_COMMON_HOME /opt/hadoop
 ENV HADOOP_HDFS_HOME /opt/hadoop
 ENV HADOOP_MAPRED_HOME /opt/hadoop
 ENV HADOOP_YARN_HOME /opt/hadoop
-ENV HADOOP_YARN_HOME /opt/spark
 ENV HADOOP_CONF_DIR /opt/hadoop/etc/hadoop
+ENV YARN_CONF_DIR /opt/hadoop/etc/hadoop
+ENV HADOOP_HOME /opt/hadoop
 ENV SPARK_HOME /opt/spark
 ENV HBASE_HOME /opt/hbase
 
@@ -78,6 +80,31 @@ RUN wget -P /opt/hbase/lib http://central.maven.org/maven2/org/apache/hadoop/had
 
 RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk\nexport HADOOP_PREFIX=/opt/hadoop\nexport HADOOP_HOME=/opt/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+
+# download Flink
+ENV FLINK_VERSION 1.1.3
+ENV SCALA_VERSION 2.11
+RUN wget -q http://ftp.jaist.ac.jp/pub/apache/flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-hadoop27-scala_${SCALA_VERSION}.tgz && \
+    tar -xzf flink-${FLINK_VERSION}-bin-hadoop27-scala_${SCALA_VERSION}.tgz && \
+    mkdir -p /opt/ && \
+    mv flink-1.1.3 /opt/flink && \
+    rm -rf flink-1.1.3-bin-hadoop27-scala_2.11.tgz
+ENV PATH $PATH:/opt/flink/bin
+
+ADD flink-conf.yaml /opt/flink/conf/flink-conf.yaml
+ADD zoo.cfg /opt/flink/conf/zoo.cfg
+
+# MASTER
+# hdfs port
+EXPOSE 50070
+# yarn port
+EXPOSE 8025 8030 8141 8088 45454
+# hbase port
+EXPOSE 16010
+# drill port
+EXPOSE 8047
+# spark port
+EXPOSE 4040
 
 # ENTRYPOINT
 ADD entrypoint.sh /root/entrypoint.sh
