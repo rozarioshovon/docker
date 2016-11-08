@@ -96,11 +96,11 @@ ADD zoo.cfg /opt/flink/conf/zoo.cfg
 
 # MASTER
 # hdfs port
-EXPOSE 50070
+EXPOSE 9000 50070
 # yarn port
 EXPOSE 8025 8030 8141 8088 45454
 # hbase port
-EXPOSE 16010
+EXPOSE 16000 16010 16020 16030
 # drill port
 EXPOSE 8047
 # spark port

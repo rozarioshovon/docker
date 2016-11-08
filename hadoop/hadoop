@@ -3,7 +3,7 @@
 command="$@"
 
 function start() {
-  docker-compose up -d zookeeper namenode datanode1 datanode2 datanode3
+  docker-compose up -d zookeeper namenode datanode1 
 }
 
 function stop() {
