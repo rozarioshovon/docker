@@ -14,11 +14,13 @@ services:
     image: khkwon/hadoop/hdfs/namenode
     ports:
       - 50070:50070
+      - 9000:9000
       - 8030:8030
       - 8047:8047
       - 8141:8141
       - 8088:8088
       - 45454:45454
+      - 16000:16000
       - 16010:16010
       - 4040:4040
     environment:
@@ -32,6 +34,9 @@ services:
     environment:
       HADOOP_NAMENODE_URI: namenode
     hostname: hadoop_datanode1_1.hadoop_default
+    ports:
+      - 16020:16020
+      - 16030:16030
 
   datanode2:
     image: khkwon/hadoop/hdfs/datanode
